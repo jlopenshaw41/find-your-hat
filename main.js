@@ -19,6 +19,86 @@ class Field {
         }
     }
 
+    playGame() {
+
+        console.log(`Find your hat! Starting at the *, navigate through the field using l (left), r (right), u (up) and d (down) until you reach your hat (^). Be careful not to fall in any holes (O)!`);
+        console.log(" ");
+
+        this.print();
+
+        let foundHat = false;
+
+        while (!foundHat) {
+            
+            let direction = prompt('Which way do you want to move?');
+
+            if (direction === 'l') {
+                if (this.field[this.verticalLocation][this.horizontalLocation - 1] === hole) {
+                    console.log(`You fell down a hole! GAME OVER`);
+                    foundHat = true;
+                } else if (this.field[this.verticalLocation][this.horizontalLocation - 1] === hat) {
+                    console.log(`YOU WIN! You found your hat, well done!`);
+                    foundHat = true;
+                } else if (this.horizontalLocation === 0) {
+                    console.log(`Oops you've reached the fence, choose a different direction`)
+                } else {
+                    this.field[this.verticalLocation][this.horizontalLocation - 1] = pathCharacter;
+                    this.horizontalLocation--;
+                    this.print();
+                }
+            }
+            
+            if (direction === 'r') {
+                if (this.field[this.verticalLocation][this.horizontalLocation + 1] === hole) {
+                    console.log(`You fell down a hole! GAME OVER`);
+                    foundHat = true;
+                } else if (this.field[this.verticalLocation][this.horizontalLocation + 1] === hat) {
+                    console.log(`YOU WIN! You found your hat, well done!`);
+                    foundHat = true;
+                } else if (this.horizontalLocation === (this.field[0].length - 1)) {
+                    console.log(`Oops you've reached the fence, choose a different direction`)
+                } else {
+                    this.field[this.verticalLocation][this.horizontalLocation + 1] = pathCharacter;
+                    this.horizontalLocation++;
+                    this.print();
+                }
+            }
+
+            if (direction === 'd') {
+                if (this.verticalLocation === (this.field.length - 1)) {
+                    console.log(`Oops you've reached the fence, choose a different direction`)
+                } else if (this.field[this.verticalLocation + 1][this.horizontalLocation] === hat) {
+                    console.log(`YOU WIN! You found your hat, well done!`);
+                    foundHat = true;
+                } else if (this.field[this.verticalLocation + 1][this.horizontalLocation] === hole) {
+                    console.log(`You fell down a hole! GAME OVER`);
+                    foundHat = true;
+                } else {
+                    this.field[this.verticalLocation + 1][this.horizontalLocation] = pathCharacter;
+                    this.verticalLocation++;
+                    this.print();
+                }
+            }
+
+            if (direction === 'u') {
+                if (this.verticalLocation === 0) {
+                    console.log(`Oops you've reached the fence, choose a different direction`)
+                } else if (this.field[myField.verticalLocation - 1][this.horizontalLocation] === hat) {
+                    console.log(`YOU WIN! You found your hat, well done!`);
+                    foundHat = true;
+                } else if (this.field[this.verticalLocation - 1][this.horizontalLocation] === hole) {
+                    console.log(`You fell down a hole! GAME OVER`);
+                    foundHat = true;
+                } else {
+                    this.field[this.verticalLocation - 1][this.horizontalLocation] = pathCharacter;
+                    this.verticalLocation--;
+                    this.print();
+                }
+            }
+        }
+
+    }
+
     static generateField(fieldHeight, fieldWidth) {
 
         let field = [];
@@ -57,6 +137,12 @@ class Field {
     }
 }
 
+let randomField = Field.generateField(10, 10);
+
+const field = new Field(randomField);
+
+field.playGame();
+
 // const myField = new Field([
 //     ['*', '░', '░', 'O'],
 //     ['░', 'O', '░', '░'],
@@ -64,103 +150,6 @@ class Field {
 //     ['░', '^', '░', '░'],
 // ]);
 
-let randomField = Field.generateField(10, 10);
-const myField = new Field(randomField);
-
-console.log(`Find your hat! Starting at the *, navigate through the field using l (left), r (right), u (up) and d (down) until you reach your hat (^). Be careful not to fall in any holes (O)!`);
-console.log(" ");
-
-myField.print();
-
-let foundHat = false;
-
-while (!foundHat) {
-    
-    let direction = prompt('Which way do you want to move?');
-
-    if (direction === 'l') {
-        if (myField.field[myField.verticalLocation][myField.horizontalLocation - 1] === hole) {
-            console.log(" ");
-            console.log(`You fell down a hole! GAME OVER`);
-            foundHat = true;
-        } else if (myField.field[myField.verticalLocation][myField.horizontalLocation - 1] === hat) {
-            console.log(" ");
-            console.log(`YOU WIN! You found your hat, well done!`);
-            foundHat = true;
-        } else if (myField.horizontalLocation === 0) {
-            console.log(" ");
-            console.log(`Oops you've reached the fence, choose a different direction`)
-            console.log(" ");
-        } else {
-            myField.field[myField.verticalLocation][myField.horizontalLocation - 1] = pathCharacter;
-            myField.horizontalLocation--;
-            console.log(" ");
-            myField.print();
-        }
-    }
-    
-    if (direction === 'r') {
-        if (myField.field[myField.verticalLocation][myField.horizontalLocation + 1] === hole) {
-            console.log(" ");
-            console.log(`You fell down a hole! GAME OVER`);
-            foundHat = true;
-        } else if (myField.field[myField.verticalLocation][myField.horizontalLocation + 1] === hat) {
-            console.log(" ");
-            console.log(`YOU WIN! You found your hat, well done!`);
-            foundHat = true;
-        } else if (myField.horizontalLocation === (myField.field[0].length - 1)) {
-            console.log(" ");
-            console.log(`Oops you've reached the fence, choose a different direction`)
-            console.log(" ");
-        } else {
-            myField.field[myField.verticalLocation][myField.horizontalLocation + 1] = pathCharacter;
-            myField.horizontalLocation++;
-            console.log(" ");
-            myField.print();
-        }
-    }
-
-    if (direction === 'd') {
-        if (myField.verticalLocation === (myField.field.length - 1)) {
-            console.log(" ");
-            console.log(`Oops you've reached the fence, choose a different direction`)
-            console.log(" ");
-        } else if (myField.field[myField.verticalLocation + 1][myField.horizontalLocation] === hat) {
-            console.log(" ");
-            console.log(`YOU WIN! You found your hat, well done!`);
-            foundHat = true;
-        } else if (myField.field[myField.verticalLocation + 1][myField.horizontalLocation] === hole) {
-            console.log(" ");
-            console.log(`You fell down a hole! GAME OVER`);
-            foundHat = true;
-        } else {
-            myField.field[myField.verticalLocation + 1][myField.horizontalLocation] = pathCharacter;
-            myField.verticalLocation++;
-            console.log(" ");
-            myField.print();
-        }
-    }
-
-    if (direction === 'u') {
-        if (myField.verticalLocation === 0) {
-            console.log(`Oops you've reached the fence, choose a different direction`)
-            console.log(" ");
-        } else if (myField.field[myField.verticalLocation - 1][myField.horizontalLocation] === hat) {
-            console.log(" ");
-            console.log(`YOU WIN! You found your hat, well done!`);
-            foundHat = true;
-        } else if (myField.field[myField.verticalLocation - 1][myField.horizontalLocation] === hole) {
-            console.log(" ");
-            console.log(`You fell down a hole! GAME OVER`);
-            foundHat = true;
-        } else {
-            myField.field[myField.verticalLocation - 1][myField.horizontalLocation] = pathCharacter;
-            myField.verticalLocation--;
-            console.log(" ");
-            myField.print();
-        }
-    }
-}
 
 // // Random number from 1 - 10
 // const numberToGuess = Math.floor(Math.random() * 10) + 1;
