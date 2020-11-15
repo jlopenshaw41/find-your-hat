@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A terminal maze-solving game.",
   "main": "main.js",
-  "author": "Codecademy",
+  "author": "Original concept: Codecademy. This version: Jennifer Openshaw",
   "license": "ISC",
   "dependencies": {
     "prompt-sync": "^4.2.0"
