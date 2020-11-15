@@ -13,16 +13,15 @@ class Field {
     }
 
     print() {
-        
+        console.log(' ');
         for (let i = 0; i < this.field.length; i++) {
             console.log(this.field[i].join(""));
         }
     }
 
     playGame() {
-
+        console.log(' ');
         console.log(`Find your hat! Starting at the *, navigate through the field using l (left), r (right), u (up) and d (down) until you reach your hat (^). Be careful not to fall in any holes (O)!`);
-        console.log(" ");
 
         this.print();
 
@@ -30,7 +29,7 @@ class Field {
 
         while (!foundHat) {
             
-            let direction = prompt('Which way do you want to move?');
+            let direction = prompt('Which way do you want to move? ');
 
             if (direction === 'l') {
                 if (this.field[this.verticalLocation][this.horizontalLocation - 1] === hole) {
@@ -99,74 +98,48 @@ class Field {
 
     }
 
-    static generateField(fieldHeight, fieldWidth) {
-
+    static generateField(fieldHeight, fieldWidth, holePercentage) {
+        let numberOfTimesToLoop = ((fieldHeight * fieldWidth) / 100) * holePercentage;
         let field = [];
-        //to generate first row of field (array)
-        let firstFieldRow = [pathCharacter];
-        for (let i = 0; i <= fieldWidth - 2; i++) {
-            let randomNum = Math.floor(Math.random() * 2)
-            if (randomNum === 0) {
-                firstFieldRow.push(fieldCharacter);
-            } else if (randomNum === 1) {
-                firstFieldRow.push(hole);
-            }
-        }
-        // console.log(firstFieldRow);
-        field.push(firstFieldRow);
 
-        //to generate remaining rows (arrays)
-        for (let i = 0; i <= fieldHeight - 2; i++){
+        //to generate initial field
+        for (let i = 0; i <= fieldHeight - 1; i++) {
             let fieldRow = [];
-            
             for (let i = 0; i <= fieldWidth - 1; i++) {
-                
-                let randomNum = Math.floor(Math.random() * 2)
-                
-                if (randomNum === 0) {
-                    fieldRow.push(fieldCharacter);
-                } else if (randomNum === 1) {
-                    fieldRow.push(hole);
-                }
-        }
-        // console.log(fieldRow);
+                fieldRow.push(fieldCharacter);
+            }
             field.push(fieldRow);
         }
+
+        //to add holes to field
+
+        for (let i = 0; i < numberOfTimesToLoop; i++) {
+            let randomIndex1 = Math.floor(Math.random() * fieldHeight);
+            let randomIndex2 = Math.floor(Math.random() * fieldWidth);
+            field[randomIndex1][randomIndex2] = hole;
+        }
+
+        //to add hat to field
+        let randomIndex3 = Math.floor(Math.random() * fieldHeight);
+        let randomIndex4 = Math.floor(Math.random() * fieldWidth);
+
+        //to check hat isn't going to be put on starting square
+        if (randomIndex3 === 0 && randomIndex4 === 0) {
+            randomIndex3 += 1; 
+        }
+        
+        field[randomIndex3][randomIndex4] = hat;
+
+        //to add starting character to field 
+
+        field[0][0] = pathCharacter;
 
         return field;
     }
 }
 
-let randomField = Field.generateField(10, 10);
+let randomField = Field.generateField(10, 10, 30);
 
-const field = new Field(randomField);
+const myField = new Field(randomField);
 
-field.playGame();
-
-// const myField = new Field([
-//     ['*', '░', '░', 'O'],
-//     ['░', 'O', '░', '░'],
-//     ['░', 'O', '░', 'O'],
-//     ['░', '^', '░', '░'],
-// ]);
-
-
-// // Random number from 1 - 10
-// const numberToGuess = Math.floor(Math.random() * 10) + 1;
-// // This variable is used to determine if the app should continue prompting the user for input
-// let foundCorrectNumber = false;
- 
-// while (!foundCorrectNumber) {
-//   // Get user input
-//   let guess = prompt('Guess a number from 1 to 10: ');
-//   // Convert the string input to a number
-//   guess = Number(guess);
- 
-//   // Compare the guess to the secret answer and let the user know.
-//   if (guess === numberToGuess) {
-//     console.log('Congrats, you got it!');
-//     foundCorrectNumber = true;
-//   } else {
-//     console.log('Sorry, guess again!');
-//   }
-// }
+myField.playGame();
